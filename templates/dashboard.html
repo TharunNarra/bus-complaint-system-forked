@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">Your Dashboard</h2>
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="d-flex justify-content-end">
+                <a href="{{ url_for('submit_complaint') }}" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Submit New Complaint
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title mb-0">Your Complaints</h3>
+                </div>
+                <div class="card-body">
+                    {% if complaints and complaints|length > 0 %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Student ID</th>
+                                        <th>Bus Number</th>
+                                        <th>Title</th>
+                                        <th>Description</th>
+                                        <th>Location</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for complaint in complaints %}
+                                        <tr>
+                                            <td>{{ complaint.student_id }}</td>
+                                            <td>{{ complaint.bus_route }}</td>
+                                            <td>{{ complaint.title }}</td>
+                                            <td>{{ complaint.description }}</td>
+                                            <td>{{ complaint.location }}</td>
+                                            <td>
+                                                <span class="badge {% if complaint.status == 'pending' %}bg-warning{% else %}bg-success{% endif %}">
+                                                    {{ complaint.status }}
+                                                </span>
+                                            </td>
+                                            <td>{{ complaint.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center">
+                            <p>No complaints submitted yet.</p>
+                            <p>Click the button above to submit your first complaint</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
